@@ -24,6 +24,11 @@ jobs:
         run: |
           git clone "https://${{ secrets.UPDATEWIKIKEY }}@github.com/${{ github.repository }}.wiki.git" wiki
 
+      - name: Configure
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          
       - name: Update
         run: |
           cd wiki
