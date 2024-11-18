@@ -42,7 +42,7 @@ jobs:
 
           git add "$FILE"
           git commit -m "Update History to latest"
-          git push "https://${{ secrets.UPDATEWIKIKEY }}@github.com/${{ github.repository }}.wiki.git" main
+          git push "https://${{ secrets.UPDATEWIKIKEY }}@github.com/${{ github.repository }}.wiki.git" master
 
       - name: Cleanup
         run: |
