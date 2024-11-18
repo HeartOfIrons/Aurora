@@ -22,7 +22,7 @@ jobs:
 
       - name: Clone
         run: |
-          git clone "https://github.com/${{ github.repository }}.wiki.git" wiki
+          git clone "https://${{ secrets.UPDATEWIKIKEY }}@github.com/${{ github.repository }}.wiki.git" wiki
 
       - name: Update
         run: |
@@ -37,7 +37,7 @@ jobs:
 
           git add "$FILE"
           git commit -m "Update History to latest"
-          git push origin main
+          git push "https://${{ secrets.UPDATEWIKIKEY }}@github.com/${{ github.repository }}.wiki.git" main
 
       - name: Cleanup
         run: |
