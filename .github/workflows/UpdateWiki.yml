@@ -1,0 +1,47 @@
+name: Update Wiki
+on:
+  push:
+    branches:
+      - main
+jobs:
+  updatewiki:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Extract Latest
+        id: commitdetails
+        run: |
+          echo "commit_message=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+          echo "commit_author=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+          echo "commit_date=$(date '+%B %dth, %Y, %-I:%M %p %Z')" >> $GITHUB_ENV
+
+      - name: Clone
+        run: |
+          git clone "https://github.com/${{ github.repository }}.wiki.git" wiki
+
+      - name: Update
+        run: |
+          cd wiki
+          FILE="Script History.md"
+          if grep -q "### SCRIPT HISTORY" "$FILE"; then
+            sed -i "/### SCRIPT HISTORY/a\\
+            ${{ env.commit_date }}\\n> ${{ env.commit_message }}\\n" "$FILE"
+          else
+            echo "### SCRIPT HISTORY" >> "$FILE"
+            echo "${{ env.commit_date }}" >> "$FILE"
+            echo "> ${{ env.commit_message }}" >> "$FILE"
+          if [ ! -f "$FILE" ]; then
+            echo "### SCRIPT HISTORY" > "$FILE"
+          fi
+          git add "$FILE"
+          git commit -m "Update History to latest"
+          git push origin main
+
+      - name: Cleanup
+        run: |
+          rm -rf wiki
