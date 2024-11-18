@@ -28,16 +28,13 @@ jobs:
         run: |
           cd wiki
           FILE="Script History.md"
-          if grep -q "### SCRIPT HISTORY" "$FILE"; then
-            sed -i "/### SCRIPT HISTORY/a\\
-            ${{ env.commit_date }}\\n> ${{ env.commit_message }}\\n" "$FILE"
-          else
-            echo "### SCRIPT HISTORY" >> "$FILE"
-            echo "${{ env.commit_date }}" >> "$FILE"
-            echo "> ${{ env.commit_message }}" >> "$FILE"
           if [ ! -f "$FILE" ]; then
             echo "### SCRIPT HISTORY" > "$FILE"
           fi
+
+          sed -i "/### SCRIPT HISTORY/a\\
+          ${{ env.commit_date }}\\n> ${{ env.commit_message }}\\n" "$FILE"
+
           git add "$FILE"
           git commit -m "Update History to latest"
           git push origin main
