@@ -1,4 +1,4 @@
---BROUGHT TO YOU BY RSCRIPTS.NET!--
+-- infinite ammo
 
 local Tables = {}
 
